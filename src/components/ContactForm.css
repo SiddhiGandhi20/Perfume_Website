@@ -1,0 +1,54 @@
+.contact-form-container {
+    display: flex;
+    justify-content: flex-end;
+    align-items: center;
+    height: 100vh;
+    background-image: url('../media/contactus.jpg'); /* Replace with your perfume image URL */
+    background-size: cover;
+    background-position: center;
+  }
+  
+  .form-wrapper {
+    background-color: rgba(255, 255, 255, 0.8);
+    padding: 30px;
+    border-radius: 10px;
+    width: 350px;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.2);
+    transform: translate(-50px, -20px); /* Moves the form 50px left and 20px upwards */
+  }
+  
+  .form-wrapper h2 {
+    text-align: center;
+    margin-bottom: 20px;
+  }
+  
+  .form-wrapper form {
+    display: flex;
+    flex-direction: column;
+  }
+  
+  .form-wrapper label {
+    margin: 10px 0 5px;
+  }
+  
+  .form-wrapper input,
+  .form-wrapper textarea {
+    padding: 10px;
+    margin-bottom: 15px;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+  }
+  
+  .form-wrapper button {
+    padding: 10px;
+    background-color: #f8c8dc;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    transition: background-color 0.3s;
+  }
+  
+  .form-wrapper button:hover {
+    background-color: #f6a2c1;
+  }
+  

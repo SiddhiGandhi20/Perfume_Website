@@ -1,0 +1,171 @@
+/* General Navbar Styling */
+nav {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 1rem 2rem;
+  background: linear-gradient(90deg, #f7f7f7, #ffffff);
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+  position: sticky;
+  top: 0;
+  z-index: 1000;
+}
+
+/* Left Menu Styling */
+nav .left {
+  display: flex;
+  list-style: none;
+  gap: 2.5rem;
+  margin: 0;
+  padding: 0;
+}
+
+nav .left li {
+  margin-right: 1.5rem;
+}
+
+nav .left li:last-child {
+  margin-right: 0;
+}
+
+/* Right Menu Styling */
+nav .right {
+  display: flex;
+  align-items: center;
+  list-style: none;
+  margin: 0;
+  padding: 0;
+}
+
+nav .right li {
+  margin-left: 1.5rem;
+}
+
+nav .right li:last-child {
+  margin-left: 0;
+}
+
+/* Link Styling */
+nav ul li a {
+  text-decoration: none;
+  color: #333;
+  font-size: 1rem;
+  font-weight: 600;
+  position: relative;
+  transition: color 0.3s ease;
+}
+
+nav ul li a:hover {
+  color: #D4AF37;
+}
+
+nav ul li a::after {
+  content: '';
+  display: block;
+  height: 2px;
+  background: #D4AF37;
+  width: 0;
+  transition: width 0.3s ease;
+  margin: 0.3rem auto 0;
+}
+
+nav ul li a:hover::after {
+  width: 100%;
+}
+
+/* Logo Styling */
+.logo {
+  text-align: center;
+}
+
+.logo h2 {
+  margin: 0;
+  font-size: 1.8rem;
+  color:#D4AF37;
+  font-family: 'Georgia', serif;
+  letter-spacing: 1px;
+}
+
+.logo p {
+  margin: 0;
+  font-size: 0.8rem;
+  color: #333;
+  font-style: italic;
+}
+
+/* Icons Styling */
+/* Right Navigation Menu Styling */
+.right {
+  display: flex;
+  align-items: center;
+  gap: 2.5rem; /* Spacing between items */
+  list-style: none; /* Remove default list styling */
+  margin: 0;
+  padding: 0;
+}
+
+/* Links within the Right Menu */
+.right li a {
+  text-decoration: none; /* Remove underlines */
+  color: #333; /* Default text color */
+  font-size: 1rem; /* Text size */
+  font-weight: 600; /* Make text bold */
+  position: relative; /* For hover effect */
+  transition: color 0.3s ease, transform 0.3s ease;
+}
+
+/* Hover Effect for Links */
+.right li a:hover {
+  color: #D4AF37; /* Change text color on hover */
+  transform: scale(1.1); /* Slight zoom effect */
+}
+
+/* Adding a Bottom Border on Hover */
+.right li a::after {
+  content: '';
+  display: block;
+  height: 2px;
+  background: #D4AF37; /* Border color */
+  width: 0;
+  transition: width 0.3s ease;
+  margin: 0.3rem auto 0;
+}
+
+.right li a:hover::after {
+  width: 100%; /* Expand border on hover */
+}
+
+/* Responsive Design for Small Screens */
+@media screen and (max-width: 768px) {
+  .right {
+    flex-wrap: wrap;
+    justify-content: center;
+    gap: 1rem;
+  }
+
+  .right li a {
+    font-size: 0.9rem;
+  }
+}
+
+/* Responsive Design */
+@media screen and (max-width: 768px) {
+  nav {
+    flex-wrap: wrap;
+    padding: 1rem;
+  }
+
+  .left,
+  .right {
+    flex-wrap: wrap;
+    justify-content: center;
+  }
+
+  .logo h2 {
+    font-size: 1.5rem;
+  }
+
+  .right li {
+    margin-left: 1rem;
+  }
+}

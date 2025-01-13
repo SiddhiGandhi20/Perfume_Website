@@ -1,0 +1,65 @@
+.men-collection {
+    padding: 20px;
+    background-color: #f4f4f4;
+    font-family: Arial, sans-serif;
+  }
+  
+  .men-collection h2 {
+    text-align: center;
+    font-size: 2em;
+    margin-bottom: 20px;
+    color: #333;
+  }
+  
+  .products-container {
+    display: grid;
+    grid-template-columns: repeat(5, 1fr); /* 5 fixed columns */
+    grid-auto-rows: auto; /* Infinite rows */
+    gap: 50px; /* Adds gap between rows and columns */
+    padding: 0 5px; /* Left and right padding for gap */
+    max-width: 1400px; /* Optional: Restrict the maximum width of the grid */
+    margin: 0 auto; /* Center the grid */
+  }
+  
+  .product-card {
+    background-color: #fff;
+    border: 1px solid #ddd;
+    border-radius: 10px;
+    padding: 15px;
+    width: 100%; /* Take full column width */
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
+    text-align: center;
+  }
+  
+  .product-card:hover {
+    transform: scale(1.05);
+    box-shadow: 0 6px 12px rgba(0, 0, 0, 0.2);
+  }
+  
+  .product-image {
+    width: 100%;
+    height: auto;
+    border-radius: 10px;
+    margin-bottom: 15px;
+  }
+  
+  .product-name {
+    font-size: 1.2em;
+    font-weight: 600;
+    color: #222;
+    margin: 10px 0;
+  }
+  
+  .product-price {
+    font-size: 1em;
+    color: #D4AF37; /* Gold shade for price */
+    font-weight: bold;
+  }
+  
+  .product-rating {
+    color: #ffcc00; /* Gold shade for rating */
+    font-size: 0.9em;
+    margin-top: 5px;
+  }
+  

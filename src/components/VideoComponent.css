@@ -1,0 +1,45 @@
+/* Video Container */
+.video-container {
+    position: relative;
+    width: 100%;
+    max-width: 100%;
+  }
+  
+  /* Styling for the video */
+  .video {
+    width: 100%;
+    height: 600px; /* Set a fixed height to reduce video size */
+    object-fit: cover; /* Ensures the video covers the area without stretching */
+    border-radius: 8px;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.2);
+  }
+  
+  /* Caption Styling */
+  .carousel-caption {
+    position: absolute;
+    bottom: 20px; /* Move the caption to the bottom with some spacing */
+    left: 50%;
+    transform: translateX(-50%); /* Center it horizontally */
+    background: rgba(255, 255, 255, 0.6); /* Soft white background for a delicate look */
+    color: #333; /* Dark grey text for a refined, gentle contrast */
+    padding: 15px 25px; /* Subtle padding for an elegant balance */
+    border-radius: 12px; /* Slightly rounded corners */
+    text-align: center;
+    font-family: 'Playfair Display', serif; /* Elegant serif font */
+    font-size: 24px; /* Elegant font size */
+    font-weight: 400; /* Light font weight for a delicate feel */
+    line-height: 1.5; /* Spacing between lines for readability */
+    width: 80%;
+    max-width: 500px; /* Soft width constraint */
+    letter-spacing: 0.5px; /* Minimal letter spacing */
+    box-sizing: border-box; /* Ensure padding doesn't affect width/height */
+    box-shadow: 0px 4px 20px rgba(0, 0, 0, 0.1); /* Soft shadow for depth */
+  }
+  
+  /* Optional: Adding a gentle hover effect for interactivity */
+  .carousel-caption:hover {
+    background: rgba(255, 255, 255, 0.8); /* Slightly more opaque background on hover */
+    transform: translateX(-50%) scale(1.03); /* Very subtle zoom effect */
+    transition: all 0.3s ease-in-out; /* Smooth transition */
+  }
+  
