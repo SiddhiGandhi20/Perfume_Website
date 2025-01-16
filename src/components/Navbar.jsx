@@ -19,19 +19,19 @@ function Navbar() {
       </ul>
       <div className="logo">
         <Link to="/" style={{ textDecoration: 'none', color: 'inherit' }}>
-          <h2>SIDDHI's</h2>
+          <h2>AROMA</h2>
           <p>PERFUMES</p>
         </Link>
       </div>
       <ul className="right">
         <li>
-          <a href="#">ABOUT</a>
+        <Link to="/about">ABOUT US</Link>
         </li>
         <li>
         <Link to="/contactus">CONTACT US</Link>
         </li>
           <li>
-          <a href="#">CART</a>
+          <Link to="/cart">CART</Link>
         </li>
         <li>
         <Link to="/account">ACCOUNT</Link>

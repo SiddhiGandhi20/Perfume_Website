@@ -1,0 +1,167 @@
+.men-perfumes-collection {
+  display: flex;
+  flex-direction: column;
+  gap: 50px;
+  padding: 20px;
+  background-color: white;
+}
+
+.men-perfumes-container {
+  display: flex;
+  gap: 20px;
+  animation: fade-up 2.5s ease-in-out;
+  padding: 20px 0;
+}
+
+.men-perfumes-info {
+  flex: 1;
+  padding: 20px;
+}
+
+.men-perfumes-title {
+  font-size: 2rem;
+  color: #333;
+  margin-bottom: 20px;
+  text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.2); 
+  font-family: 'Georgia', serif;
+}
+
+.men-perfumes-description {
+  font-size: 1.2rem;
+  color: #666;
+  margin-bottom: 20px;
+  text-align: justify;
+  font-family: 'Georgia', 'Times New Roman', serif;
+}
+
+.men-perfumes-buy-button {
+  padding: 15px 30px;
+  background-color: #D4AF37;
+  border: none;
+  border-radius: 5px;
+  color: #fff;
+  font-family: 'Georgia', 'Times New Roman', serif;
+  font-weight: bold;
+  font-size: 1.2rem;
+  margin-top: 20px;
+  cursor: pointer;
+  transition: background-color 0.3s ease;
+  display: block;
+  text-align: center;
+  width: 200px;
+}
+
+.men-perfumes-buy-button:hover {
+  background-color: #B89130;
+}
+
+.men-perfumes-image {
+  flex: 1;
+  display: flex;
+  justify-content: center;
+  animation: slide-in-left 1.5s ease-in-out;
+  width: 100%;
+}
+
+.men-perfumes-img-large {
+  width: 80%;
+  height: 400px;
+  border-radius: 10px;
+}
+
+.men-perfumes-container:nth-child(odd) .men-perfumes-image {
+  animation: slide-in-right 1.5s ease-in-out;
+}
+
+.men-perfumes-container:nth-child(even) .men-perfumes-image {
+  animation: slide-in-left 1.5s ease-in-out;
+}
+
+/* Animations */
+@keyframes fade-up {
+  from {
+    opacity: 0;
+    transform: translateY(30px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+@keyframes zoom-out {
+  from {
+    opacity: 0;
+    transform: scale(0.8);
+  }
+  to {
+    opacity: 1;
+    transform: scale(1);
+  }
+}
+
+@keyframes slide-in-left {
+  from {
+    transform: translateX(-100%);
+    opacity: 0;
+  }
+  to {
+    transform: translateX(0);
+    opacity: 1;
+  }
+}
+
+@keyframes slide-in-right {
+  from {
+    transform: translateX(100%);
+    opacity: 0;
+  }
+  to {
+    transform: translateX(0);
+    opacity: 1;
+  }
+}
+
+/* Responsive Design */
+@media (max-width: 768px) {
+  .men-perfumes-container {
+    flex-direction: column;
+    gap: 20px;
+  }
+
+  .men-perfumes-info {
+    padding: 10px;
+  }
+
+  .men-perfumes-title {
+    font-size: 1.5rem; /* Smaller title font for mobile */
+  }
+
+  .men-perfumes-description {
+    font-size: 1rem; /* Smaller description font for mobile */
+  }
+
+  .men-perfumes-buy-button {
+    width: 100%; /* Button takes full width */
+    padding: 12px 20px; /* Adjusted padding for smaller screens */
+  }
+
+  .men-perfumes-img-large {
+    width: 100%; /* Image takes up full width */
+    height: auto; /* Automatically adjusts height */
+  }
+}
+
+@media (max-width: 480px) {
+  .men-perfumes-title {
+    font-size: 1.2rem; /* Even smaller font size for smaller screens */
+  }
+
+  .men-perfumes-description {
+    font-size: 0.9rem; /* Smaller description font for mobile */
+  }
+
+  .men-perfumes-buy-button {
+    padding: 10px 15px; /* Further reduced padding */
+  }
+}

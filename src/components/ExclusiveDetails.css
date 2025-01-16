@@ -1,0 +1,235 @@
+/* General Styling for Exclusive Details */
+.exclusive-details {
+  padding: 20px;
+  background-color: #ffffff;
+  border-radius: 12px;
+  box-shadow: 0 8px 20px rgba(0, 0, 0, 0.15); /* Softer shadow for depth */
+  font-family: 'Georgia', sans-serif;
+  max-width: 1200px;
+  margin: 40px auto;
+  color: #333; /* Darker text for contrast */
+}
+
+/* Layout for exclusive_product Details */
+  /* Layout for exclusive_product Details */
+  .exclusive_product-detail {
+    display: flex; /* Align items side by side */
+    gap: 32px; /* Add space between image and info */
+    align-items: flex-start; /* Align image and info at the top */
+    padding: 16px;
+  }
+  
+  /* Image Section */
+.exclusive_product-image-large {
+  width: 100%;
+  max-width: 500px;
+  height: auto;
+  object-fit: cover;
+  border-radius: 12px;
+  border: 2px solid #f0f0f0;
+  /* box-shadow: 0 6px 15px rgba(0, 0, 0, 0.12);
+  transition: transform 0.3s ease, box-shadow 0.3s ease; */
+}
+
+.exclusive_product-image-large:hover {
+  transform: scale(1.05); /* Slight zoom effect */
+  /* box-shadow: 0 8px 18px rgba(0, 0, 0, 0.15); */
+}
+
+/* exclusive_product Information Section */
+.exclusive_product-info {
+  flex: 1;
+  max-width: 600px;
+  display: flex;
+  flex-direction: column; /* Stack items vertically */
+  align-items: flex-start; /* Align all items to the left */
+  gap: 16px; /* Consistent spacing between items */
+}
+  /* exclusive_product Title */
+  .exclusive_product-title {
+    font-size: 2rem;
+    font-weight: 700;
+    color: #222;
+    text-transform: capitalize;
+    margin-bottom: 30px;
+  }
+  
+  /* Price Styling */
+  .exclusive_product-price {
+    font-size: 1.8rem;
+    font-weight: bold;
+    color: #e63946;
+  }
+  
+  /* Keynotes, Type, Size */
+  .exclusive_product-info p {
+    font-size: 1.2rem;
+    color: #555;
+    line-height: 1.8;
+    margin: 0; /* Remove default margins */
+    padding: 0; /* Ensure no padding */
+  }
+  
+  strong {
+    font-weight: 600;
+    color: #333;
+  }
+  
+  /* exclusive_quantity Selector */
+  .exclusive_quantity-selector {
+    display: flex;
+    flex-direction: column; /* Stack label and buttons vertically */
+    align-items: flex-start; /* Align to the left */
+    gap: 12px; /* Add space between label and buttons */
+    margin-bottom: 24px;
+  }
+  
+  /* exclusive_quantity Label */
+  .exclusive_quantity-label {
+    font-size: 1.2em;
+    font-weight: bold;
+    color: #444;
+  }
+  
+  /* Wrapper for the exclusive_quantity buttons */
+  .exclusive_ml-buttons-wrapper {
+    display: flex;
+    gap: 10px; /* Space between buttons */
+    justify-content: flex-start; /* Align buttons to the left */
+  }
+  
+  /* Neutral Button Styling */
+  .exclusive_ml-button {
+    padding: 10px 16px;
+    font-size: 14px;
+    font-weight: bold;
+    border: 1px solid #ccc; /* Neutral border */
+    border-radius: 8px;
+    background-color: #f8f9fa; /* Light background */
+    color: #555; /* Neutral text color */
+    cursor: pointer;
+    transition: transform 0.3s, box-shadow 0.3s;
+  }
+  
+  .ml-button.active {
+    background-color: #FFD700; /* Slightly darker background for active state */
+    border-color: #bdbdbd;
+  }
+  
+  .ml-button:hover {
+    transform: scale(1.05);
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1); /* Subtle shadow */
+  }
+  
+  /* exclusive_quantity Input Wrapper */
+  .exclusive_quantity-input-wrapper {
+    display: flex;
+    flex-direction: column; /* Stack label and input vertically */
+    align-items: flex-start; /* Align to the left */
+    gap: 10px; /* Add space between label and input */
+    margin-bottom: 24px; /* Space before action buttons */
+  }
+  
+  .quantity-input {
+    width: 80px;
+    padding: 8px;
+    font-size: 16px;
+    border: 1px solid #ccc;
+    border-radius: 6px;
+    text-align: center;
+  }
+
+
+/* Responsive Design */
+@media (max-width: 768px) {
+  .exclusive_quantity-selector {
+    flex-direction: column; /* Stack elements vertically on smaller screens */
+    align-items: center; /* Center align */
+  }
+
+  .exclusive_quantity-input-wrapper {
+    align-items: center; /* Center align vertically on smaller screens */
+  }
+
+  .exclusive_quantity-input {
+    width: 60px; /* Adjust width on smaller screens */
+  }
+}
+
+/* Action Buttons */
+.exclusive_action-buttons {
+  display: flex;
+  flex-direction: column; /* Stack buttons vertically */
+  gap: 16px; /* Space between buttons */
+  align-items: center; /* Center buttons */
+  width: 100%; /* Full width of the parent */
+  max-width: 100%; /* Remove any restrictions */
+}
+
+button {
+  padding: 14px 28px;
+  font-size: 1rem;
+  font-weight: bold;
+  text-transform: uppercase;
+  border: none;
+  border-radius: 8px;
+  cursor: pointer;
+  transition: transform 0.3s, background-color 0.3s;
+  width: 100%; /* Full width of the container */
+  max-width: 400px; /* Optional: Set a maximum width */
+}
+
+
+/* Add to Cart Button */
+.add-to-cart {
+  background: linear-gradient(to right, #f1c40f, #f39c12); /* Golden gradient */
+  color: white;
+}
+
+.add-to-cart:hover {
+  background: linear-gradient(to right, #f39c12, #f1c40f);
+  transform: scale(1.02);
+}
+
+/* Buy Now Button */
+.buy-now {
+  background: linear-gradient(to right, #ff0844, #ffb199);
+  color: white;
+}
+
+.buy-now:hover {
+  background: linear-gradient(to right, #ffb199, #ff0844);
+  transform: scale(1.02);
+}
+
+/* Responsive Design */
+@media (max-width: 768px) {
+  .action-buttons {
+    align-items: center; /* Center align buttons on smaller screens */
+  }
+
+  button {
+    max-width: 100%; /* Ensure buttons adapt to screen width */
+  }
+}
+
+
+/* Responsive Design */
+@media (max-width: 768px) {
+  .exclusive_product-detail {
+    flex-direction: column;
+    align-items: center;
+  }
+
+  .exclusive_product-image-large {
+    max-width: 100%;
+  }
+
+  .exclusive_product-info {
+    max-width: 100%;
+  }
+
+  .action-buttons {
+    justify-content: center;
+  }
+}

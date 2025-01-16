@@ -1,0 +1,111 @@
+.perfume-section {
+  display: flex;
+  flex-direction: column;
+  gap: 50px;
+  padding: 20px;
+  background-color: white; /* Subtle background for the entire section */
+}
+
+.perfume-container {
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+  padding: 20px 0;
+}
+
+.perfume-info {
+  animation: fade-in 1.5s ease-in-out;
+  padding-left: 20px; 
+}
+
+.perfume-title {
+  font-size: 2rem;
+  color: #333;
+  margin-bottom: 20px;
+  text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.2); /* Adds a subtle shadow */
+  font-family: 'Georgia', serif; /* Elegant font for the heading */
+}
+
+.perfume-description {
+  font-size: 1.2rem;
+  color: #666;
+  margin-bottom: 20px;
+  text-align: justify;
+  font-family: 'Georgia', 'Times New Roman', serif;
+}
+
+.buy-button {
+  padding: 15px 30px;
+  background-color: #D4AF37;
+  border: none;
+  border-radius: 5px;
+  color: #fff;
+  font-family: 'Georgia', 'Times New Roman', serif;
+  font-weight: bold;
+  font-size: 1.2rem;
+  margin-top: 20px;
+  cursor: pointer;
+  transition: background-color 0.3s ease;
+  width: 200px;
+  display: block; /* Ensures the button behaves like a block element */
+  text-align: center; /* Aligns the text inside the button to the left */
+}
+
+.buy-button:hover {
+  background-color: #B89130;
+}
+
+.perfume-image {
+  display: flex;
+  justify-content: center;
+  animation: slide-in-left 1.5s ease-in-out;
+  width: 100%;
+}
+
+.perfume-img-large {
+  width: 80%;
+  height: 400px;
+  border-radius: 10px;
+}
+
+.perfume-container:nth-child(odd) .perfume-image {
+  animation: slide-in-right 1.5s ease-in-out;
+}
+
+.perfume-container:nth-child(even) .perfume-image {
+  animation: slide-in-left 1.5s ease-in-out;
+}
+
+/* Animations */
+/* Animations */
+@keyframes fade-in {
+  from {
+    opacity: 0;
+  }
+  to {
+    opacity: 1;
+  }
+}
+
+@keyframes fade-left {
+  from {
+    transform: translateX(-100%);
+    opacity: 0;
+  }
+  to {
+    transform: translateX(0);
+    opacity: 1;
+  }
+}
+
+@keyframes fade-right {
+  from {
+    transform: translateX(100%);
+    opacity: 0;
+  }
+  to {
+    transform: translateX(0);
+    opacity: 1;
+  }
+}
+

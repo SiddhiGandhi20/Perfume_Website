@@ -1,64 +1,101 @@
-import React from 'react';
+import React, { useEffect, useState } from 'react';
+import { useNavigate } from 'react-router-dom';
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import { faStar as solidStar } from '@fortawesome/free-solid-svg-icons';
+import { faStar as regularStar } from '@fortawesome/free-regular-svg-icons';
 import './Men.css';
 
-const Men = () => {
-  const products = [
-    {
-      id: 1,
-      name: 'Velvet Nights by Noir',
-      price: 2250,
-      imageUrl: 'men1.jpg',
-      rating: 5,
-    },
-    {
-      id: 2,
-      name: 'Royal Ember by Imperium',
-      price: 3000,
-      imageUrl: 'men2.jpg',
-      rating: 4,
-    },
-    {
-      id: 3,
-      name: 'Cedar Woods by Timber',
-      price: 1999,
-      imageUrl: 'men3.jpg',
-      rating: 4,
-    },
-    {
-      id: 4,
-      name: 'Violet Thunder by Empyrean',
-      price: 1599,
-      imageUrl: 'men4.jpg',
-      rating: 5,
-    },
-    {
-      id: 5,
-      name: 'Noble Drift by Atlas',
-      price: 1899,
-      imageUrl: 'men5.jpg',
-      rating: 3,
-    },
-    {
-      id: 6,
-      name: 'Eternal Mist by Templar',
-      price: 1000,
-      imageUrl: 'men6.jpg',
-      rating: 4,
-    },
-  ];
+const Men = ({ cart, setCart }) => {
+  const navigate = useNavigate();
+  const [products, setProducts] = useState([]);
+
+  // Fetch products from the server
+  useEffect(() => {
+    const fetchProducts = async () => {
+      try {
+        const response = await fetch('http://localhost:5000/perfumes');
+        if (!response.ok) {
+          throw new Error('Failed to fetch products');
+        }
+        const data = await response.json();
+        setProducts(data); // Assuming the response is an array of products
+      } catch (error) {
+        console.error('Error fetching products:', error);
+      }
+    };
+
+    fetchProducts();
+  }, []);
+
+  const renderStars = (rating) => {
+    const stars = [];
+    for (let i = 1; i <= 5; i++) {
+      stars.push(
+        <FontAwesomeIcon
+          key={i}
+          icon={i <= rating ? solidStar : regularStar}
+        />
+      );
+    }
+    return stars;
+  };
+
+  const handleAddToCart = (event, product) => {
+    event.stopPropagation(); // Prevent propagation to parent `onClick`
+    
+    // Check if the product already exists in the cart
+    const existingProduct = cart.find((item) => item.id === product.id);
+
+    if (existingProduct) {
+      // If product is already in the cart, just update the quantity
+      setCart(cart.map((item) =>
+        item.id === product.id
+          ? { ...item, quantity: item.quantity + 1 }
+          : item
+      ));
+    } else {
+      // If product is not in the cart, add it with quantity 1
+      setCart([...cart, { ...product, quantity: 1 }]);
+    }
+
+    alert(`${product.name} has been added to your cart!`);
+  };
+
+  const handleCardClick = (id) => {
+    navigate(`/detailsM/${id}`);
+  };
 
   return (
     <div className="men-collection">
-      <h2>Exclusive Men's Perfume Collection</h2>
+      <h2>Men's Perfume Collection</h2>
       <div className="products-container">
-        {products.map((product) => (
-          <div key={product.id} className="product-card">
-            <img src={product.imageUrl} alt={product.name} className="product-image" />
-            <h3 className="product-name">{product.name}</h3>
-            <p className="product-price">₹{product.price}</p>
-            <p className="product-rating">Rating: {product.rating} stars</p>
-          </div>
-        ))}
+        {products.length > 0 ? (
+          products.map((product) => (
+            <div
+              key={product.id}
+              className="product-card"
+              onClick={() => handleCardClick(product._id)}
+              style={{ cursor: 'pointer' }}
+            >
+              <img
+                src={product.image_url}
+                alt={product.name}
+                className="product-image"
+              />
+              <h3 className="product-name">{product.name}</h3>
+              <p className="product-price">₹{product.price}</p>
+              <p className="product-rating">{renderStars(product.rating)}</p>
+              <button
+                className="add-to-cart-btn"
+                onClick={(event) => handleAddToCart(event, product)}
+              >
+                Add to Cart
+              </button>
+            </div>
+          ))
+        ) : (
+          <p>Loading products...</p>
+        )}
       </div>
     </div>
   );

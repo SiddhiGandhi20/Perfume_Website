@@ -1,7 +1,6 @@
 .men-collection {
     padding: 20px;
     background-color: #f4f4f4;
-    font-family: Arial, sans-serif;
   }
   
   .men-collection h2 {
@@ -9,6 +8,9 @@
     font-size: 2em;
     margin-bottom: 20px;
     color: #333;
+    font-family: 'Georgia', serif;
+    text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.2);
+    color: #222;
   }
   
   .products-container {
@@ -58,8 +60,31 @@
   }
   
   .product-rating {
-    color: #ffcc00; /* Gold shade for rating */
-    font-size: 0.9em;
-    margin-top: 5px;
+    font-size: 1rem;
+    color: #FFD700; /* Gold color for stars */
   }
+  
+  .product-rating i {
+    margin-right: 5px;
+    font-size: 1rem;
+    color: #FFD700; /* Gold color for stars */
+  }
+  .add-to-cart-btn {
+    display: inline-block;
+    margin-top: 10px;
+    padding: 10px 20px;
+    font-size: 1rem;
+    font-weight: bold;
+    color: black;
+    background-color:#FFD700 ;
+    border: none;
+    border-radius: 8px;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+  }
+  
+  .add-to-cart-btn:hover {
+    background-color: #D4AF37;
+  }
+  
   

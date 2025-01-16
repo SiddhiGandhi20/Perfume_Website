@@ -1,11 +1,14 @@
 import React, { useState } from "react";
-import "./Account.css";
+import { useNavigate } from "react-router-dom"; // Import useNavigate
+import './Account.css';
 
 function Account() {
   const [isLogin, setIsLogin] = useState(true);
   const [formData, setFormData] = useState({ email: "", password: "", name: "" });
   const [errors, setErrors] = useState({ email: "", password: "", name: "" });
   const [isSubmitting, setIsSubmitting] = useState(false);
+  
+  const navigate = useNavigate(); // Initialize navigate
 
   const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
   const passwordRegex = /^(?=.*[A-Za-z])(?=.*\d)[A-Za-z\d]{8,}$/;
@@ -30,18 +33,48 @@ function Account() {
     return formErrors;
   };
 
-  const handleSubmit = (e) => {
+  const handleSubmit = async (e) => {
     e.preventDefault();
     const formErrors = validateForm();
     if (Object.keys(formErrors).length > 0) {
       setErrors(formErrors);
       return;
     }
+
     setIsSubmitting(true);
-    setTimeout(() => {
-      alert(isLogin ? "Login successful!" : "Registration successful!");
+    const endpoint = isLogin ? "http://localhost:5000/login" : "http://localhost:5000/signup";
+    const payload = isLogin
+      ? { email: formData.email, password: formData.password }
+      : { name: formData.name, email: formData.email, password: formData.password, confirm_password: formData.password };
+
+    try {
+      const response = await fetch(endpoint, {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify(payload),
+      });
+
+      const data = await response.json();
+
+      if (response.ok) {
+        alert(data.message);
+        if (isLogin && data.token) {
+          localStorage.setItem("authToken", data.token); // Save token for authenticated requests
+          navigate("/"); // Redirect to the home page
+        }
+        setFormData({ email: "", password: "", name: "" });
+      } else {
+        alert(data.error || "An unexpected error occurred");
+      }
+
       setIsSubmitting(false);
-    }, 1000);
+    } catch (error) {
+      setIsSubmitting(false);
+      console.error("Error:", error);
+      alert("An unexpected error occurred");
+    }
   };
 
   const handleChange = (e) => {
@@ -94,7 +127,7 @@ function Account() {
               />
               {errors.password && <p className="error">{errors.password}</p>}
             </div>
-            <button type="submit" className="btn" disabled={isSubmitting}>
+            <button type="submit" className="acc-btn" disabled={isSubmitting}>
               {isSubmitting ? "Submitting..." : isLogin ? "Login" : "Register"}
             </button>
           </form>

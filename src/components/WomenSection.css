@@ -1,0 +1,139 @@
+.women-perfumes-collection {
+  display: flex;
+  flex-direction: column;
+  gap: 50px;
+  padding: 20px;
+  background-color: white;
+}
+
+.women-perfumes-container {
+  display: flex;
+  gap: 20px;
+  animation: fade-in 1.5s ease-in-out;
+  padding: 20px 0;
+}
+
+.women-perfumes-info {
+  flex: 1;
+  padding: 20px;
+}
+
+.women-perfumes-title {
+  font-size: 2rem;
+  color: #333;
+  margin-bottom: 20px;
+  text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.2);
+  font-family: 'Georgia', serif;
+}
+
+.women-perfumes-description {
+  font-size: 1.2rem;
+  color: #666;
+  margin-bottom: 20px;
+  text-align: justify;
+  font-family: 'Georgia', 'Times New Roman', serif;
+}
+
+.women-perfumes-buy-button {
+  padding: 15px 30px;
+  background-color: #D4AF37;
+  border: none;
+  border-radius: 5px;
+  color: #fff;
+  font-family: 'Georgia', 'Times New Roman', serif;
+  font-weight: bold;
+  font-size: 1.2rem;
+  margin-top: 20px;
+  cursor: pointer;
+  transition: background-color 0.3s ease;
+  display: block; /* Ensures the button behaves like a block element */
+  text-align: center;
+  width: 200px;
+}
+
+.women-perfumes-buy-button:hover {
+  background-color: #B89130;
+}
+
+.women-perfumes-image {
+  flex: 1;
+  display: flex;
+  justify-content: center;
+  animation: slide-in-left 1.5s ease-in-out;
+  width: 100%;
+}
+
+.women-perfumes-img-large {
+  width: 80%;
+  height: 400px;
+  border-radius: 10px;
+}
+
+.women-perfumes-container:nth-child(odd) .women-perfumes-image {
+  animation: slide-in-right 1.5s ease-in-out;
+}
+
+.women-perfumes-container:nth-child(even) .women-perfumes-image {
+  animation: slide-in-left 1.5s ease-in-out;
+}
+
+/* Animations */
+@keyframes fade-up {
+  from {
+    opacity: 0;
+    transform: translateY(20px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+@keyframes zoom-out {
+  from {
+    opacity: 0;
+    transform: scale(0.8);
+  }
+  to {
+    opacity: 1;
+    transform: scale(1);
+  }
+}
+
+@keyframes slide-in-left {
+  from {
+    transform: translateX(-100%);
+    opacity: 0;
+  }
+  to {
+    transform: translateX(0);
+    opacity: 1;
+  }
+}
+
+@keyframes slide-in-right {
+  from {
+    transform: translateX(100%);
+    opacity: 0;
+  }
+  to {
+    transform: translateX(0);
+    opacity: 1;
+  }
+}
+
+/* Responsive Design */
+@media (max-width: 768px) {
+  .women-perfumes-container {
+    flex-direction: column;
+  }
+
+  .women-perfumes-info {
+    padding: 10px;
+  }
+
+  .women-perfumes-img-large {
+    width: 100%;
+    height: auto;
+  }
+}

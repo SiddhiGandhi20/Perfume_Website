@@ -115,7 +115,8 @@
     margin-top: 10px; /* Reduced margin */
     display: flex;
     justify-content: center;
-    gap: 10px; /* Reduced gap */
+    gap: 10px;
+    color: #000; /* Reduced gap */
   }
   
   .footer-social a {

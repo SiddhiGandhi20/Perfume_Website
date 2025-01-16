@@ -1,0 +1,137 @@
+/* General Styles */
+body{
+    color: white;
+}
+  h2 {
+    text-align: center;
+    margin-bottom: 30px;
+    font-family: 'Georgia', serif;
+    text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.2);
+    color: #222;
+  }
+  
+  /* Bestsellers Collection Section */
+  .bestsellers-collection {
+    padding: 50px 20px;
+  }
+  
+  .bestsellers-container {
+    display: grid;
+    grid-template-columns: repeat(5, 1fr); /* 5 fixed columns */
+    grid-auto-rows: auto; /* Infinite rows */
+    gap: 50px; /* Adds gap between rows and columns */
+    padding: 0 5px; /* Left and right padding for gap */
+    max-width: 1400px; /* Optional: Restrict the maximum width of the grid */
+    margin: 0 auto; /* Center the grid */
+  }
+  
+  .bestseller-card {
+    background-color: #fff;
+    border: 1px solid #ddd;
+    border-radius: 10px;
+    padding: 15px;
+    width: 100%; /* Take full column width */
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
+    text-align: center;
+  }
+  
+  .bestseller-card:hover {
+    transform: translateY(-7px);
+    box-shadow: 0 10px 20px rgba(0, 0, 0, 0.25);
+  }
+  
+  .bestseller-image {
+    width: 65%;
+    height: 220px;
+    object-fit: cover;
+    border-radius: 10px;
+    margin-bottom: 15px;
+  }
+  
+  .bestseller-name {
+    font-size: 1.2em;
+    font-weight: 600;
+    color: #222;
+    margin: 10px 0;
+  }
+  
+  .bestseller-price {
+    font-size: 1em;
+    color: black; /* Gold shade for price */
+    font-weight: bold;
+  }
+  
+  .bestseller-rating {
+    font-size: 1rem;
+    color: #FFD700;  /* Orange color for stars */
+  }
+  
+  .bestseller-rating i {
+    margin-right: 5px;
+    font-size: 1rem;
+    color: #FFD700; /* Orange color for stars */
+  }
+  .add-to-cart-btn {
+    display: inline-block;
+    margin-top: 10px;
+    padding: 10px 20px;
+    font-size: 1rem;
+    font-weight: bold;
+    color: black;
+    background-color:#FFD700 ;
+    border: none;
+    border-radius: 8px;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+  }
+  
+  .add-to-cart-btn:hover {
+    background-color: #D4AF37;
+  }
+  
+
+  
+  /* Animations */
+  @keyframes fade-in {
+    from {
+      opacity: 0;
+    }
+    to {
+      opacity: 1;
+    }
+  }
+  
+  @keyframes slide-in-right {
+    from {
+      transform: translateX(100%);
+      opacity: 0;
+    }
+    to {
+      transform: translateX(0);
+      opacity: 1;
+    }
+  }
+  
+  @keyframes slide-in-left {
+    from {
+      transform: translateX(-100%);
+      opacity: 0;
+    }
+    to {
+      transform: translateX(0);
+      opacity: 1;
+    }
+  }
+  
+  @keyframes zoom-in {
+    from {
+      transform: scale(0.8);
+      opacity: 0;
+    }
+    to {
+      transform: scale(1);
+      opacity: 1;
+    }
+  }
+  

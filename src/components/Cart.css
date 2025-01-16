@@ -1,0 +1,192 @@
+/* Container for the cart */
+.cart-container {
+  max-width: 800px;
+  margin: 20px auto;
+  padding: 20px;
+  font-family: 'Georgia', sans-serif;
+  background-color: #fafafa;
+  margin-top: 60px; /* Space between navbar and cart */
+}
+
+/* Title and empty cart message */
+.cart-container h1 {
+  font-size: 24px;
+  text-align: center;
+  margin-bottom: 20px;
+  color: #222;
+  font-family: 'Georgia', sans-serif;
+}
+
+.cart-container p {
+  text-align: center;
+  color: #555;
+  font-size: 14px;
+  margin: 10px 0;
+}
+
+/* Individual cart item styles */
+.cart-item {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  background-color: #fff;
+  padding: 12px;
+  border-radius: 6px;
+  border: 1px solid #ddd;
+  margin-bottom: 12px;
+  transition: box-shadow 0.1s ease;
+}
+
+.cart-item:hover {
+  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.05);
+}
+
+.cart-item-image {
+  width: 200px;
+  height: 150px;
+  object-fit: cover;
+  border-radius: 4px;
+  margin-right: 12px;
+}
+
+/* Item details */
+.cart-item-details {
+  flex: 2;
+  display: flex;
+  flex-direction: column;
+}
+
+.cart-item-details h3 {
+  font-size: 16px; /* Increased font size for name */
+  color: #333;
+  margin-bottom: 6px;
+  font-weight: 500;
+}
+
+.cart-item-details p {
+  font-size: 14px; /* Increased font size for price */
+  color: #666;
+  margin-bottom: 10px;
+}
+
+/* Right-aligned section */
+.cart-item-right {
+  flex: 1;
+  display: flex;
+  flex-direction: column; /* Stack quantity controls and remove button */
+  align-items: flex-end; /* Align items to the end (right) */
+  gap: 10px;
+}
+
+/* Quantity control buttons */
+.quantity-control {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+.quantity-control button {
+  background-color: transparent;
+  color: #555;
+  border: 1px solid #ccc;
+  padding: 6px 12px;
+  font-size: 14px; /* Increased button size */
+  cursor: pointer;
+  border-radius: 4px;
+  transition: background-color 0.2s ease;
+}
+
+.quantity-control button:hover {
+  background-color: #f0f0f0;
+}
+
+.quantity {
+  font-size: 14px; /* Adjusted font size */
+  color: #333;
+  font-weight: 500;
+}
+
+/* Remove button positioned below quantity controls */
+.remove-btn {
+  background-color: gold;
+  color: black;
+  border: none;
+  font-size: 14px;
+  cursor: pointer;
+  transition: color 0.2s ease;
+  width: 40%;
+}
+
+.remove-btn:hover {
+  color: grey;
+}
+
+/* Cart summary and checkout */
+.cart-summary {
+  text-align: center;
+  margin-top: 20px;
+}
+
+.cart-summary h2 {
+  font-size: 18px;
+  color: #222;
+  margin-bottom: 12px;
+}
+
+.checkout-btn {
+  background-color: #007bff;
+  color: white;
+  border: none;
+  padding: 8px 16px;
+  font-size: 14px;
+  cursor: pointer;
+  border-radius: 4px;
+  transition: background-color 0.2s ease;
+}
+
+.checkout-btn:hover {
+  background-color: #0056b3;
+}
+/* Modal styles */
+.modal {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background-color: rgba(0, 0, 0, 0.5);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.modal-content {
+  background-color: white;
+  padding: 20px;
+  border-radius: 8px;
+  text-align: center;
+  width: 300px;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+}
+
+.close-btn {
+  position: absolute;
+  top: 10px;
+  right: 10px;
+  font-size: 20px;
+  cursor: pointer;
+}
+
+.continue-shopping-btn {
+  background-color: #4CAF50;
+  color: white;
+  border: none;
+  padding: 10px 20px;
+  cursor: pointer;
+  border-radius: 5px;
+  margin-top: 10px;
+}
+
+.continue-shopping-btn:hover {
+  background-color: #45a049;
+}
