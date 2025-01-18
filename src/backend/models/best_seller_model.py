@@ -1,9 +1,9 @@
 from pymongo.errors import PyMongoError
 from bson.objectid import ObjectId
 
-class WomenPerfumeDetailsModel:
+class BestSellerDetailsModel:
     def __init__(self, db):
-        self.collection = db["women_perfumes"]
+        self.collection = db["bestsellers"]
 
     def create_detail(self, detail_data):
         try:
@@ -14,7 +14,6 @@ class WomenPerfumeDetailsModel:
                 "type": detail_data["type"],
                 "keynotes": detail_data["keynotes"],
                 "description": detail_data["description"],
-                "ratings": detail_data.get("ratings"),  # New field
             }
             result = self.collection.insert_one(item)
             return {"id": str(result.inserted_id), "message": "Perfume created successfully"}
@@ -34,7 +33,6 @@ class WomenPerfumeDetailsModel:
                     "type": item["type"],
                     "keynotes": item["keynotes"],
                     "description": item["description"],
-                    "ratings": item.get("ratings"),  # New field
                 }
                 for item in items
             ]
@@ -54,7 +52,6 @@ class WomenPerfumeDetailsModel:
                     "type": item["type"],
                     "keynotes": item["keynotes"],
                     "description": item["description"],
-                    "ratings":item["ratings"]
                 }
             return None
         except PyMongoError as e:

@@ -8,6 +8,9 @@ const MenDetails = ({ cart, setCart }) => {
   const [product, setProduct] = useState(null); // State to store product details
   const [quantity, setQuantity] = useState(1); // Default quantity to 1
   const [selectedSize, setSelectedSize] = useState('50ml'); // Default size
+  const [error, setError] = useState(null); // Error state to store error messages
+
+  const [recommendations, setRecommendations] = useState([]); // State to store recommendations
 
   // Fetch product details by ID
   useEffect(() => {
@@ -27,6 +30,33 @@ const MenDetails = ({ cart, setCart }) => {
 
     fetchProduct();
   }, [id]);
+
+  // Fetch recommendations
+  useEffect(() => {
+    const fetchRecommendations = async (productType) => {
+      try {
+        const response = await fetch(`http://localhost:5000/perfumes?type=${productType}`);
+        if (!response.ok) {
+          throw new Error('Failed to fetch recommendations');
+        }
+        const data = await response.json();
+
+        // Filter out the current product if it exists
+        if (product && product.id) {
+          const filteredRecommendations = data.filter((recProduct) => recProduct.id !== product.id);
+          setRecommendations(filteredRecommendations); // Set filtered recommendations
+        } else {
+          setRecommendations(data); // Set recommendations if no product found
+        }
+      } catch (err) {
+        setError(err.message); // Set error if request fails
+      }
+    };
+
+    if (product) {
+      fetchRecommendations(product.type); // Fetch recommendations based on the current product type
+    }
+  }, [product]);
 
   // If the product is not found, show a loading message or error
   if (!product) {
@@ -63,6 +93,11 @@ const MenDetails = ({ cart, setCart }) => {
   const handleBuyNow = () => {
     console.log(`Proceeding to buy ${quantity} of ${product.name} (${selectedSize})`);
     // Implement checkout functionality here
+  };
+
+  // Function to handle recommendation click
+  const handleRecommendationClick = (id) => {
+    navigate(`/product/${id}`); // Navigate to product details page
   };
 
   return (
@@ -145,6 +180,39 @@ const MenDetails = ({ cart, setCart }) => {
           </div>
         </div>
       </div>
+
+      {/* Recommendations Section */}
+      {/* Recommendations Section */}
+      <div className="recommendations-section">
+        <h3>Recommended for You</h3>
+        <div className="rec-products-container">
+          {recommendations.map((product) => (
+            <div
+              key={product.id}
+              className="rec-product-card"
+              onClick={() => navigate(`/detailsM/${product._id}`)}
+              style={{ cursor: 'pointer' }}
+            >
+              <img
+                src={product.image_url}
+                alt={product.name}
+                className="rec-product-image"
+              />
+              <h3 className="rec-product-name">{product.name}</h3>
+              <p className="rec-product-price">₹{product.price}</p>
+              {/* Render Rating Stars */}
+              {/* <p className="rec-product-rating">{renderStars(product.ratings)}</p> */}
+              <button
+                className="add-to-cart-btn"
+                onClick={(event) => handleAddToCart(event, product)}
+              >
+                Add to Cart
+              </button>
+            </div>
+          ))}
+        </div>
+      </div>
+
     </div>
   );
 };

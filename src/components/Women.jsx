@@ -5,14 +5,13 @@ import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faStar as solidStar } from '@fortawesome/free-solid-svg-icons';
 import { faStar as regularStar } from '@fortawesome/free-regular-svg-icons';
 
-const Women = ({ cart, setCart }) => {
+const Women = ({ cart = [], setCart }) => {
   const navigate = useNavigate();
-  const [products, setProducts] = useState([]); // State to store fetched products
-  const [loading, setLoading] = useState(true); // State for loading indicator
-  const [error, setError] = useState(null); // State for error handling
+  const [products, setProducts] = useState([]);
+  const [loading, setLoading] = useState(true);
+  const [error, setError] = useState(null);
 
   useEffect(() => {
-    // Fetch data from the API
     const fetchProducts = async () => {
       try {
         const response = await fetch('http://localhost:5000/women_perfumes');
@@ -20,7 +19,7 @@ const Women = ({ cart, setCart }) => {
           throw new Error('Failed to fetch products');
         }
         const data = await response.json();
-        setProducts(data); // Update products state with fetched data
+        setProducts(data);
         setLoading(false);
       } catch (err) {
         setError(err.message);
@@ -45,19 +44,28 @@ const Women = ({ cart, setCart }) => {
   };
 
   const handleAddToCart = (event, product) => {
-    event.stopPropagation(); // Prevent propagation to parent `onClick`
+    event.stopPropagation();
 
-    const existingProduct = cart.find(item => item.id === product.id);
-
-    if (existingProduct) {
-      setCart(cart.map(item =>
-        item.id === product.id
-          ? { ...item, quantity: item.quantity + 1 }
-          : item
-      ));
-    } else {
-      setCart([...cart, { ...product, quantity: 1 }]);
+    if (!product || !product._id) {
+      alert('Invalid product details. Unable to add to cart.');
+      return;
     }
+
+    setCart((prevCart) => {
+      const existingProduct = prevCart.find((item) => item._id === product._id);
+
+      if (existingProduct) {
+        // Update quantity if product exists in the cart
+        return prevCart.map((item) =>
+          item._id === product._id
+            ? { ...item, quantity: item.quantity + 1 }
+            : item
+        );
+      } else {
+        // Add new product to the cart
+        return [...prevCart, { ...product, quantity: 1 }];
+      }
+    });
 
     alert(`${product.name} has been added to your cart!`);
   };
@@ -80,7 +88,7 @@ const Women = ({ cart, setCart }) => {
       <div className="products-container">
         {products.map((product) => (
           <div
-            key={product.id}
+            key={product._id}
             className="product-card"
             onClick={() => handleCardClick(product._id)}
             style={{ cursor: 'pointer' }}
@@ -92,7 +100,7 @@ const Women = ({ cart, setCart }) => {
             />
             <h3 className="product-name">{product.name}</h3>
             <p className="product-price">₹{product.price}</p>
-            <p className="product-rating">{renderStars(product.rating)}</p>
+            <p className="product-rating">{renderStars(product.ratings)}</p>
             <button
               className="add-to-cart-btn"
               onClick={(event) => handleAddToCart(event, product)}

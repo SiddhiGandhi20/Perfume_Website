@@ -1,19 +1,21 @@
 import React, { useState, useEffect } from 'react';
-import { useParams } from 'react-router-dom';
-import { useNavigate } from 'react-router-dom';
+import { useParams, useNavigate } from 'react-router-dom';
 import './WomenDetails.css';
+import { faStar as regularStar } from '@fortawesome/free-regular-svg-icons';
+import { faStar as solidStar } from '@fortawesome/free-solid-svg-icons';
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 
 const WomenDetails = ({ cart, setCart }) => {
   const navigate = useNavigate();
   const { id } = useParams(); // Get product ID from URL
   const [quantity, setQuantity] = useState(1);
-  const [selectedQuantity, setSelectedQuantity] = useState("50"); // Default quantity to 1 // Quantity state for the selected product
   const [product, setProduct] = useState(null); // State to store the fetched product
   const [loading, setLoading] = useState(true); // State to track loading
   const [error, setError] = useState(null); // State to track errors
+  const [recommendations, setRecommendations] = useState([]); // State to store recommended products
 
+  // Fetch the product details by ID
   useEffect(() => {
-    // Fetch product from server by ID
     const fetchProduct = async () => {
       try {
         setLoading(true);
@@ -33,85 +35,111 @@ const WomenDetails = ({ cart, setCart }) => {
     fetchProduct();
   }, [id]);
 
-  // If loading, display a loading message
-  if (loading) {
-    return <p>Loading...</p>;
-  }
+  // Fetch product recommendations based on the product type
+  useEffect(() => {
+    const fetchRecommendations = async (productType) => {
+      try {
+        const response = await fetch(`http://localhost:5000/women_perfumes?type=${productType}`);
+        if (!response.ok) {
+          throw new Error('Failed to fetch recommendations');
+        }
+        const data = await response.json();
 
-  // If there's an error, display the error message
-  if (error) {
-    return <p>{error}</p>;
-  }
+        // Filter out the current product if it exists
+        if (product && product.id) {
+          const filteredRecommendations = data.filter((recProduct) => recProduct.id !== product.id);
+          setRecommendations(filteredRecommendations); // Set filtered recommendations
+        } else {
+          setRecommendations(data); // Set recommendations if no product found
+        }
+      } catch (err) {
+        setError(err.message); // Set error if request fails
+      }
+    };
 
-  // If no product found, display a "Product not found" message
-  if (!product) {
-    return <p>Product not found</p>;
-  }
+    if (product) {
+      fetchRecommendations(product.type); // Fetch recommendations based on the current product type
+    }
+  }, [product]);
 
-  // Function to handle quantity selection
+  // Handle quantity click
   const handleQuantityClick = (size) => {
     setQuantity(size);
   };
 
-  // Function to handle adding to cart
+  // Handle adding the product to the cart
   const handleAddToCart = (event) => {
-    event.stopPropagation(); // Prevent propagation to parent `onClick`
+    event.stopPropagation(); // Prevent event propagation
 
     // Check if the product already exists in the cart
     const existingProduct = cart.find(item => item.id === product.id);
 
     if (existingProduct) {
-      // If product is already in the cart, just update the quantity
       setCart(cart.map(item =>
         item.id === product.id
           ? { ...item, quantity: item.quantity + 1 }
           : item
       ));
     } else {
-      // If product is not in the cart, add it with quantity 1
       setCart([...cart, { ...product, quantity: 1 }]);
     }
 
     alert(`${product.name} has been added to your cart!`);
   };
 
-  // Function to handle "Buy Now"
+  const renderStars = (rating) => {
+    const stars = [];
+    for (let i = 1; i <= 5; i++) {
+      stars.push(
+        <FontAwesomeIcon
+          key={i}
+          icon={i <= rating ? solidStar : regularStar}
+        />
+      );
+    }
+    return stars;
+  };
+
+  // Handle buy now action
   const handleBuyNow = () => {
     console.log(`Proceeding to buy ${quantity} of ${product.name}`);
-    // Add functionality to proceed to checkout or initiate purchase
+    // Add functionality to proceed to checkout
   };
+
+  // Handle recommendation click to show the clicked product details
+  const handleRecommendationClick = (productId) => {
+    console.log(`Navigating to product details for ID: ${productId}`);
+    if (productId) {
+      navigate(`/detailsW/${productId}`); // Navigate to the product details page
+    } else {
+      console.error("Product ID is missing");
+    }
+  };
+
+  // Loading and error handling
+  if (loading) return <p>Loading...</p>;
+  if (error) return <p>{error}</p>;
+  if (!product) return <p>Product not found</p>;
 
   return (
     <div className="women-details">
-      {/* Product Name */}
-      <h2 className="women_product-title">{product.name}</h2>
-
+      <h2>{product.name}</h2>
       <div className="women_product-detail">
-        {/* Product Image */}
         <img
-          src={product.image_url} // Assume imageUrl is a valid URL from the API
+          src={product.image_url}
           alt={product.name}
-          className="men_product-image-large"
+          className="women_product-image-large"
         />
-
-        {/* Product Information */}
         <div className="women_product-info">
-          {/* Price */}
           <p className="women_product-price">
             <strong>Price:</strong> ₹{product.price}
           </p>
-
-          {/* Type */}
           <p className="women_product-type">
             <strong>Type:</strong> {product.type}
           </p>
-
-          {/* Keynotes */}
           <p className="women_product-keynotes">
             <strong>Keynotes:</strong> {product.keynotes}
           </p>
-          
-          {/* Description */}
           <p className="women_product-description">
             <strong>Description:</strong> {product.description}
           </p>
@@ -160,6 +188,42 @@ const WomenDetails = ({ cart, setCart }) => {
           </div>
         </div>
       </div>
+
+      {/* Recommendations Section */}
+        <div className="recommendations-section">
+          <h3>Recommended for You</h3>
+          <div className="rec-products-container">
+            {recommendations.map((product) => (
+              <div
+                key={product.id}
+                className="rec-product-card"
+                onClick={() => 
+                {
+                  {
+                    navigate(`/detailsW/${product._id}`);
+                  }
+                }
+                }
+                style={{ cursor: 'pointer' }}
+              >
+                <img
+                  src={product.image_url}
+                  alt={product.name}
+                  className="rec-product-image"
+                />
+                <h3 className="rec-product-name">{product.name}</h3>
+                <p className="rec-product-price">₹{product.price}</p>
+                <p className="rec-product-rating">{renderStars(product.ratings)}</p>
+                <button
+                  className="add-to-cart-btn"
+                  onClick={(event) => handleAddToCart(event, product)}
+                >
+                  Add to Cart
+                </button>
+              </div>
+            ))}
+          </div>
+        </div>
     </div>
   );
 };

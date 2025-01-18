@@ -1,71 +1,92 @@
 import React from 'react';
+import { useNavigate } from 'react-router-dom';
 import './Cart.css';
 
-const Cart = ({ cartItems = [], setCart }) => {
-  // Calculate total price for the cart
+const Cart = ({ cartItems, setCart }) => {
+  const navigate = useNavigate();
+
+  const handleDecreaseQuantity = (id) => {
+    const updatedCart = cartItems.map((item) =>
+      item._id === id && item.quantity > 1
+        ? { ...item, quantity: item.quantity - 1 }
+        : item
+    );
+    setCart(updatedCart);
+  };
+
+  const handleIncreaseQuantity = (id) => {
+    const updatedCart = cartItems.map((item) =>
+      item._id === id ? { ...item, quantity: item.quantity + 1 } : item
+    );
+    setCart(updatedCart);
+  };
+
+  const handleRemoveFromCart = (id) => {
+    const updatedCart = cartItems.filter((item) => item._id !== id);
+    setCart(updatedCart);
+  };
+
   const calculateTotal = () => {
-    return cartItems.reduce((total, item) => total + item.price * item.quantity, 0);
+    return cartItems.reduce(
+      (total, item) => total + item.price * item.quantity,
+      0
+    );
   };
 
-  // Update the quantity of an item in the cart
-  const updateQuantity = (id, newQuantity) => {
-    if (newQuantity < 1) return; // Prevent reducing quantity below 1
-    setCart(cartItems.map(item =>
-      item.id === id ? { ...item, quantity: newQuantity } : item
-    ));
-  };
-
-  // Remove an item from the cart
-  const removeItem = (id) => {
-    setCart(cartItems.filter(item => item.id !== id));
+  const handleProceedToCheckout = () => {
+    navigate('/checkout', { state: { cartItems } });
+    
   };
 
   return (
-    <div className="cart-container">
-      <h1>Shopping Cart</h1>
-      {cartItems.length === 0 ? (
-        <p>Your cart is empty</p>
-      ) : (
-        <div>
-          <div className="cart-items">
-            {cartItems.map(item => (
-              <div className="cart-item" key={item.id}>
-                <div style={{ display: 'flex', alignItems: 'center' }}>
-                  <img src={item.imageUrl} alt={item.name} className="cart-item-image" />
-                  <div className="cart-item-details">
-                    <h3>{item.name}</h3>
-                    <p>{`₹${item.price}`}</p>
-                  </div>
-                </div>
-                <div className="cart-item-right">
-                  <div className="quantity-control">
-                    <button
-                      onClick={() => updateQuantity(item.id, item.quantity - 1)}
-                      disabled={item.quantity <= 1}
-                    >
-                      -
-                    </button>
-                    <span className="quantity">{item.quantity}</span>
-                    <button
-                      onClick={() => updateQuantity(item.id, item.quantity + 1)}
-                    >
-                      +
-                    </button>
-                  </div>
-                  <div className="cart-item-price">
-                    <p>{`₹${item.price * item.quantity}`}</p>
-                  </div>
-                  <button onClick={() => removeItem(item.id)} className="remove-btn">Remove</button>
+    <div className="cart">
+      <h2>Shopping Cart</h2>
+      {cartItems.length > 0 ? (
+        <div className="cart-items">
+          {cartItems.map((item) => (
+            <div key={item._id} className="cart-item">
+              <img
+                src={item.image_url}
+                alt={item.name}
+                className="cart-item-image"
+              />
+              <div className="cart-item-details">
+                <h3>{item.name}</h3>
+                <p>Price (each): ₹{item.price}</p>
+                <p>Total Price: ₹{item.price * item.quantity}</p>
+                <div className="quantity-control">
+                  <button
+                    onClick={() => handleDecreaseQuantity(item._id)}
+                    className="quantity-btn"
+                  >
+                    -
+                  </button>
+                  <span className="quantity">{item.quantity}</span>
+                  <button
+                    onClick={() => handleIncreaseQuantity(item._id)}
+                    className="quantity-btn"
+                  >
+                    +
+                  </button>
                 </div>
               </div>
-            ))}
+              <button
+                className="remove-btn"
+                onClick={() => handleRemoveFromCart(item._id)}
+              >
+                Remove
+              </button>
+            </div>
+          ))}
+          <div className="cart-total">
+            <h3>Total: ₹{calculateTotal()}</h3>
           </div>
-
-          <div className="cart-summary">
-            <h2>Total: ₹{calculateTotal()}</h2>
-            <button className="checkout-btn">Proceed to Checkout</button>
+          <div className="proceed-to-checkout">
+            <button onClick={handleProceedToCheckout}>Proceed to Checkout</button>
           </div>
         </div>
+      ) : (
+        <p>Your cart is empty.</p>
       )}
     </div>
   );

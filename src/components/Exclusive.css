@@ -134,9 +134,9 @@ h2 {
   text-align: justify;
 }
 
-.buy-button {
+.buy-btn {
   padding: 12px 25px;
-  background-color: #D4AF37;
+  background-color: #FFD700;
   border: none;
   border-radius: 8px;
   color: #fff;
@@ -146,8 +146,8 @@ h2 {
   transition: background-color 0.3s ease, transform 0.2s ease;
 }
 
-.buy-button:hover {
-  background-color: #B89130;
+.buy-btn:hover {
+  background-color:  #D4AF37;
   transform: scale(1.05);
 }
 

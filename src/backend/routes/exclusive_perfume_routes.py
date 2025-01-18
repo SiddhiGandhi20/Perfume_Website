@@ -27,9 +27,10 @@ def create_exclusive_perfume_details_routes(db, upload_folder):
             image = request.files.get("image")
             type_ = request.form.get("type")
             keynotes = request.form.get("keynotes")
+            ratings = request.form.get("ratings")  # New field
 
             # Log received data
-            print(f"Received data - name: {name}, description: {description}, price: {price}, image: {image}, type: {type_}, keynotes: {keynotes}")
+            print(f"Received data - name: {name}, description: {description}, price: {price}, image: {image}, type: {type_}, keynotes: {keynotes}, ratings: {ratings}")
 
             # Validate required fields
             missing_fields = [field for field in ["name", "description", "price", "type", "keynotes"] if not request.form.get(field)]
@@ -52,6 +53,11 @@ def create_exclusive_perfume_details_routes(db, upload_folder):
             host_ip = get_host_ip()
             image_url = f"http://{host_ip}:5000/uploads/exclusive_perfumes/{filename}"  # Assuming your Flask app runs on port 5000
 
+            try:
+                ratings_value = float(ratings) if ratings else None
+            except ValueError:
+                return jsonify({"message": "Invalid ratings format. Please provide a numeric value."}), 400
+
             # Construct perfume data
             try:
                 price_value = float(price.replace(",", ""))  # Ensure price is a float
@@ -64,7 +70,8 @@ def create_exclusive_perfume_details_routes(db, upload_folder):
                 "price": price_value,
                 "image_url": image_url,
                 "type": type_,
-                "keynotes": keynotes
+                "keynotes": keynotes,
+                "ratings": ratings_value  # Include the new field
             }
 
             # Insert into MongoDB
@@ -103,6 +110,12 @@ def create_exclusive_perfume_details_routes(db, upload_folder):
         try:
             # Retrieve data from form-data
             update_data = request.form.to_dict()
+
+            if "ratings" in update_data:
+                try:
+                    update_data["ratings"] = float(update_data["ratings"])
+                except ValueError:
+                    return jsonify({"message": "Invalid ratings format. Please provide a numeric value."}), 400
 
             # Validate and process the fields
             if "price" in update_data:

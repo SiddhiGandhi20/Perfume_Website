@@ -14,6 +14,7 @@ class MenPerfumeDetailsModel:
                 "type": detail_data["type"],
                 "keynotes": detail_data["keynotes"],
                 "description": detail_data["description"],
+                "ratings": detail_data.get("ratings"),  # New field
             }
             result = self.collection.insert_one(item)
             return {"id": str(result.inserted_id), "message": "Perfume created successfully"}
@@ -33,6 +34,7 @@ class MenPerfumeDetailsModel:
                     "type": item["type"],
                     "keynotes": item["keynotes"],
                     "description": item["description"],
+                    "ratings": item.get("ratings"),  # New field
                 }
                 for item in items
             ]
@@ -40,18 +42,20 @@ class MenPerfumeDetailsModel:
             print(f"Error retrieving perfumes: {e}")
             return []
 
+
     def get_detail_by_id(self, item_id):
         try:
             item = self.collection.find_one({"_id": ObjectId(item_id)})
             if item:
                 return {
-                    "id": str(item["_id"]),
+                     "_id": str(item["_id"]),
                     "name": item["name"],
                     "price": item["price"],
                     "image_url": item["image_url"],
                     "type": item["type"],
                     "keynotes": item["keynotes"],
                     "description": item["description"],
+                    "ratings": item.get("ratings"),  # New field
                 }
             return None
         except PyMongoError as e:

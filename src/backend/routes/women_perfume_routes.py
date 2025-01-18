@@ -16,7 +16,6 @@ def create_women_perfume_details_routes(db, upload_folder):
         host_ip = socket.gethostbyname(socket.gethostname())
         return host_ip
 
-    # POST: Create a new perfume detail
     @women_perfume_bp.route("/women_perfumes", methods=["POST"])
     def create_perfume_detail():
         try:
@@ -27,9 +26,10 @@ def create_women_perfume_details_routes(db, upload_folder):
             image = request.files.get("image")
             type_ = request.form.get("type")
             keynotes = request.form.get("keynotes")
+            ratings = request.form.get("ratings")  # New field
 
             # Log received data
-            print(f"Received data - name: {name}, description: {description}, price: {price}, image: {image}, type: {type_}, keynotes: {keynotes}")
+            print(f"Received data - name: {name}, description: {description}, price: {price}, image: {image}, type: {type_}, keynotes: {keynotes}, ratings: {ratings}")
 
             # Validate required fields
             missing_fields = [field for field in ["name", "description", "price", "type", "keynotes"] if not request.form.get(field)]
@@ -43,18 +43,24 @@ def create_women_perfume_details_routes(db, upload_folder):
             if not os.path.exists(women_perfumes_folder):
                 os.makedirs(women_perfumes_folder)
 
-            # Save image to server in the 'uploads/women_perfumes' folder
+            # Save image to server
             filename = secure_filename(image.filename)
             image_path = os.path.join(women_perfumes_folder, filename)
             image.save(image_path)
 
-            # Construct image URL with host IP address
+            # Construct image URL
             host_ip = get_host_ip()
-            image_url = f"http://{host_ip}:5000/uploads/women_perfumes/{filename}"  # Assuming your Flask app runs on port 5000
+            image_url = f"http://{host_ip}:5000/uploads/women_perfumes/{filename}"
+
+            # Validate and process ratings
+            try:
+                ratings_value = float(ratings) if ratings else None
+            except ValueError:
+                return jsonify({"message": "Invalid ratings format. Please provide a numeric value."}), 400
 
             # Construct perfume data
             try:
-                price_value = float(price.replace(",", ""))  # Ensure price is a float
+                price_value = float(price.replace(",", ""))
             except ValueError:
                 return jsonify({"message": "Invalid price format. Please provide a numeric value."}), 400
 
@@ -64,18 +70,20 @@ def create_women_perfume_details_routes(db, upload_folder):
                 "price": price_value,
                 "image_url": image_url,
                 "type": type_,
-                "keynotes": keynotes
+                "keynotes": keynotes,
+                "ratings": ratings_value  # Include the new field
             }
 
             # Insert into MongoDB
             created_perfume = perfume_model.create_detail(perfume_data)
             if created_perfume:
-                return jsonify(created_perfume), 201  # Return success response with ID
+                return jsonify(created_perfume), 201
             else:
                 return jsonify({"message": "Error creating perfume"}), 500
         except Exception as e:
             print(f"Error in create_perfume_detail: {e}")
             return jsonify({"message": f"Error creating perfume: {str(e)}"}), 500
+
 
     # GET: Fetch all women_perfumes
     @women_perfume_bp.route("/women_perfumes", methods=["GET"])
@@ -104,12 +112,12 @@ def create_women_perfume_details_routes(db, upload_folder):
             # Retrieve data from form-data
             update_data = request.form.to_dict()
 
-            # Validate and process the fields
-            if "price" in update_data:
+            # Validate and process ratings
+            if "ratings" in update_data:
                 try:
-                    update_data["price"] = float(update_data["price"].replace(",", ""))
+                    update_data["ratings"] = float(update_data["ratings"])
                 except ValueError:
-                    return jsonify({"message": "Invalid price format. Please provide a numeric value."}), 400
+                    return jsonify({"message": "Invalid ratings format. Please provide a numeric value."}), 400
 
             # Handle image file if provided
             if "image" in request.files:
@@ -131,20 +139,18 @@ def create_women_perfume_details_routes(db, upload_folder):
 
             # Perform the update operation
             result = perfume_model.update_detail(id, update_data)
-
             if not result:
                 return jsonify({"message": f"No perfume found with id: {id}"}), 404
 
-            # Fetch the updated document
             updated_perfume = perfume_model.get_detail_by_id(id)
             if updated_perfume:
                 return jsonify(updated_perfume), 200
             else:
                 return jsonify({"message": "Failed to fetch updated document"}), 500
-
         except Exception as e:
             print(f"Error in update_perfume_detail: {e}")
             return jsonify({"message": f"Error updating perfume: {str(e)}"}), 500
+
 
     # DELETE: Delete a perfume by ID
     @women_perfume_bp.route("/women_perfumes/<id>", methods=["DELETE"])
@@ -158,3 +164,5 @@ def create_women_perfume_details_routes(db, upload_folder):
             return jsonify({"message": f"Error deleting perfume: {str(e)}"}), 500
 
     return women_perfume_bp
+
+

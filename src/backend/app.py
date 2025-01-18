@@ -8,6 +8,7 @@ from routes.user_routes import create_auth_routes
 from routes.men_perfume_routes import create_men_perfume_details_routes
 from routes.women_perfume_routes import create_women_perfume_details_routes
 from routes.exclusive_perfume_routes import create_exclusive_perfume_details_routes
+from routes.best_seller_routes import create_bestseller_details_routes
 
 
 
@@ -40,12 +41,17 @@ def serve_womenperfume_image(filename):
 def serve_exclusiveperfume_image(filename):
     return send_from_directory(os.path.join(upload_folder, "exclusive_perfumes"), filename)
 
+@app.route('/uploads/bestseller/<filename>')
+def serve_bestseller_image(filename):
+    return send_from_directory(os.path.join(upload_folder, "bestseller"), filename)
+
 
 # Import and register blueprints
 app.register_blueprint(create_auth_routes(mongo.db))
 app.register_blueprint(create_women_perfume_details_routes(mongo.db, upload_folder="uploads"))
 app.register_blueprint(create_men_perfume_details_routes(mongo.db, upload_folder="uploads"))
 app.register_blueprint(create_exclusive_perfume_details_routes(mongo.db, upload_folder="uploads"))
+app.register_blueprint(create_bestseller_details_routes(mongo.db, upload_folder="uploads"))
 
 
 
