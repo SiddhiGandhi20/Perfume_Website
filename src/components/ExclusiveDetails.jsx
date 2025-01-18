@@ -2,7 +2,7 @@ import React, { useState, useEffect } from 'react';
 import { useNavigate, useParams } from 'react-router-dom';
 import './ExclusiveDetails.css';
 
-const ExclusiveDetails = ({ cart, setCart }) => {
+const ExclusiveDetails = ({ cartItems = [], setCart }) => {
   const navigate = useNavigate();
   const { id } = useParams();
   const [product, setProduct] = useState(null); // State for product details
@@ -43,20 +43,22 @@ const ExclusiveDetails = ({ cart, setCart }) => {
 
   const handleAddToCart = (event) => {
     event.stopPropagation(); // Prevent propagation to parent `onClick`
-    if (!product) return;
-
-    const existingProduct = cart.find((item) => item.id === product.id);
+    
+    // Ensure cartItems is always an array
+    if (!product || !Array.isArray(cartItems)) return; // Ensure cartItems is an array
+    
+    const existingProduct = cartItems.find((item) => item.id === product.id);
 
     if (existingProduct) {
       setCart(
-        cart.map((item) =>
+        cartItems.map((item) =>
           item.id === product.id
             ? { ...item, quantity: item.quantity + parseInt(quantity) }
             : item
         )
       );
     } else {
-      setCart([...cart, { ...product, quantity: parseInt(quantity) }]);
+      setCart([...cartItems, { ...product, quantity: parseInt(quantity) }]);
     }
 
     alert(`${product.name} has been added to your cart!`);
@@ -161,38 +163,32 @@ const ExclusiveDetails = ({ cart, setCart }) => {
 
       {/* Recommendation Section */}
       <div className="recommendations-section">
-  <h3>Recommended for You</h3>
-  <div className="rec-products-container">
-    {recommendations.map((product) => (
-      <div
-        key={product.id}
-        className="rec-product-card"
-        onClick={() =>
-        {
-          navigate(`/details/${product._id}`);
-        }
-        }
-        style={{ cursor: 'pointer' }}
-      >
-        <img
-          src={product.image_url}
-          alt={product.name}
-          className="rec-product-image"
-        />
-        <h3 className="rec-product-name">{product.name}</h3>
-        <p className="rec-product-price">₹{product.price}</p>
-        {/* <p className="rec-product-rating">{renderStars(product.ratings)}</p> */}
-        <button
-          className="add-to-cart-btn"
-          onClick={(event) => handleAddToCart(event, product)}
-        >
-          Add to Cart
-        </button>
+        <h3>Recommended for You</h3>
+        <div className="rec-products-container">
+          {recommendations.map((product) => (
+            <div
+              key={product.id}
+              className="rec-product-card"
+              onClick={() => handleViewDetails(product.id)}
+              style={{ cursor: 'pointer' }}
+            >
+              <img
+                src={product.image_url}
+                alt={product.name}
+                className="rec-product-image"
+              />
+              <h3 className="rec-product-name">{product.name}</h3>
+              <p className="rec-product-price">₹{product.price}</p>
+              <button
+                className="add-to-cart-btn"
+                onClick={(event) => handleAddToCart(event, product)}
+              >
+                Add to Cart
+              </button>
+            </div>
+          ))}
+        </div>
       </div>
-    ))}
-  </div>
-</div>
-
     </div>
   );
 };

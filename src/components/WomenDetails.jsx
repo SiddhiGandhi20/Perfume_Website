@@ -5,7 +5,7 @@ import { faStar as regularStar } from '@fortawesome/free-regular-svg-icons';
 import { faStar as solidStar } from '@fortawesome/free-solid-svg-icons';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 
-const WomenDetails = ({ cart, setCart }) => {
+const WomenDetails = ({ cartItems, setCart }) => {
   const navigate = useNavigate();
   const { id } = useParams(); // Get product ID from URL
   const [quantity, setQuantity] = useState(1);
@@ -68,20 +68,20 @@ const WomenDetails = ({ cart, setCart }) => {
   };
 
   // Handle adding the product to the cart
-  const handleAddToCart = (event) => {
+  const handleAddToCart = (event, product) => {
     event.stopPropagation(); // Prevent event propagation
 
     // Check if the product already exists in the cart
-    const existingProduct = cart.find(item => item.id === product.id);
+    const existingProduct = cartItems.find(item => item.id === product.id);
 
     if (existingProduct) {
-      setCart(cart.map(item =>
+      setCart(cartItems.map(item =>
         item.id === product.id
           ? { ...item, quantity: item.quantity + 1 }
           : item
       ));
     } else {
-      setCart([...cart, { ...product, quantity: 1 }]);
+      setCart([...cartItems, { ...product, quantity: 1 }]);
     }
 
     alert(`${product.name} has been added to your cart!`);
@@ -179,7 +179,7 @@ const WomenDetails = ({ cart, setCart }) => {
 
           {/* Action Buttons */}
           <div className="women_action-buttons">
-            <button className="add-to-cart" onClick={handleAddToCart}>
+            <button className="add-to-cart" onClick={(event) => handleAddToCart(event, product)}>
               Add to Cart
             </button>
             <button className="buy-now" onClick={handleBuyNow}>
@@ -190,40 +190,34 @@ const WomenDetails = ({ cart, setCart }) => {
       </div>
 
       {/* Recommendations Section */}
-        <div className="recommendations-section">
-          <h3>Recommended for You</h3>
-          <div className="rec-products-container">
-            {recommendations.map((product) => (
-              <div
-                key={product.id}
-                className="rec-product-card"
-                onClick={() => 
-                {
-                  {
-                    navigate(`/detailsW/${product._id}`);
-                  }
-                }
-                }
-                style={{ cursor: 'pointer' }}
+      <div className="recommendations-section">
+        <h3>Recommended for You</h3>
+        <div className="rec-products-container">
+          {recommendations.map((product) => (
+            <div
+              key={product.id}
+              className="rec-product-card"
+              onClick={() => handleRecommendationClick(product.id)}
+              style={{ cursor: 'pointer' }}
+            >
+              <img
+                src={product.image_url}
+                alt={product.name}
+                className="rec-product-image"
+              />
+              <h3 className="rec-product-name">{product.name}</h3>
+              <p className="rec-product-price">₹{product.price}</p>
+              <p className="rec-product-rating">{renderStars(product.ratings)}</p>
+              <button
+                className="add-to-cart-btn"
+                onClick={(event) => handleAddToCart(event, product)}
               >
-                <img
-                  src={product.image_url}
-                  alt={product.name}
-                  className="rec-product-image"
-                />
-                <h3 className="rec-product-name">{product.name}</h3>
-                <p className="rec-product-price">₹{product.price}</p>
-                <p className="rec-product-rating">{renderStars(product.ratings)}</p>
-                <button
-                  className="add-to-cart-btn"
-                  onClick={(event) => handleAddToCart(event, product)}
-                >
-                  Add to Cart
-                </button>
-              </div>
-            ))}
-          </div>
+                Add to Cart
+              </button>
+            </div>
+          ))}
         </div>
+      </div>
     </div>
   );
 };

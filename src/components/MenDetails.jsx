@@ -2,14 +2,13 @@ import React, { useState, useEffect } from 'react';
 import { useNavigate, useParams } from 'react-router-dom';
 import './MenDetails.css';
 
-const MenDetails = ({ cart, setCart }) => {
+const MenDetails = ({ cartItems, setCart }) => {
   const navigate = useNavigate();
   const { id } = useParams(); // Get product ID from URL
   const [product, setProduct] = useState(null); // State to store product details
   const [quantity, setQuantity] = useState(1); // Default quantity to 1
   const [selectedSize, setSelectedSize] = useState('50ml'); // Default size
   const [error, setError] = useState(null); // Error state to store error messages
-
   const [recommendations, setRecommendations] = useState([]); // State to store recommendations
 
   // Fetch product details by ID
@@ -31,7 +30,7 @@ const MenDetails = ({ cart, setCart }) => {
     fetchProduct();
   }, [id]);
 
-  // Fetch recommendations
+  // Fetch recommendations based on the product type
   useEffect(() => {
     const fetchRecommendations = async (productType) => {
       try {
@@ -40,8 +39,6 @@ const MenDetails = ({ cart, setCart }) => {
           throw new Error('Failed to fetch recommendations');
         }
         const data = await response.json();
-
-        // Filter out the current product if it exists
         if (product && product.id) {
           const filteredRecommendations = data.filter((recProduct) => recProduct.id !== product.id);
           setRecommendations(filteredRecommendations); // Set filtered recommendations
@@ -54,7 +51,7 @@ const MenDetails = ({ cart, setCart }) => {
     };
 
     if (product) {
-      fetchRecommendations(product.type); // Fetch recommendations based on the current product type
+      fetchRecommendations(product.type); // Fetch recommendations based on current product type
     }
   }, [product]);
 
@@ -70,24 +67,25 @@ const MenDetails = ({ cart, setCart }) => {
       size: selectedSize,
       quantity,
     };
-
+  
     // Check if the product with the same size already exists in the cart
-    const existingProductIndex = cart.findIndex(
+    const existingProductIndex = cartItems.findIndex(
       (item) => item.id === product.id && item.size === selectedSize
     );
-
+  
     if (existingProductIndex !== -1) {
       // If product exists, update its quantity
-      const updatedCart = [...cart];
+      const updatedCart = [...cartItems];
       updatedCart[existingProductIndex].quantity += quantity;
       setCart(updatedCart);
     } else {
       // If product doesn't exist, add it to the cart
-      setCart([...cart, cartItem]);
+      setCart([...cartItems, cartItem]);
     }
-
+  
     alert(`${product.name} (${selectedSize}) has been added to your cart!`);
   };
+  
 
   // Function to handle "Buy Now"
   const handleBuyNow = () => {
@@ -182,7 +180,6 @@ const MenDetails = ({ cart, setCart }) => {
       </div>
 
       {/* Recommendations Section */}
-      {/* Recommendations Section */}
       <div className="recommendations-section">
         <h3>Recommended for You</h3>
         <div className="rec-products-container">
@@ -190,7 +187,7 @@ const MenDetails = ({ cart, setCart }) => {
             <div
               key={product.id}
               className="rec-product-card"
-              onClick={() => navigate(`/detailsM/${product._id}`)}
+              onClick={() => handleRecommendationClick(product.id)}
               style={{ cursor: 'pointer' }}
             >
               <img
@@ -200,8 +197,6 @@ const MenDetails = ({ cart, setCart }) => {
               />
               <h3 className="rec-product-name">{product.name}</h3>
               <p className="rec-product-price">₹{product.price}</p>
-              {/* Render Rating Stars */}
-              {/* <p className="rec-product-rating">{renderStars(product.ratings)}</p> */}
               <button
                 className="add-to-cart-btn"
                 onClick={(event) => handleAddToCart(event, product)}
@@ -212,7 +207,6 @@ const MenDetails = ({ cart, setCart }) => {
           ))}
         </div>
       </div>
-
     </div>
   );
 };
