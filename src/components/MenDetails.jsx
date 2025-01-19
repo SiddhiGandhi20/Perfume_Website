@@ -87,16 +87,30 @@ const MenDetails = ({ cartItems, setCart }) => {
   };
   
 
-  // Function to handle "Buy Now"
   const handleBuyNow = () => {
-    console.log(`Proceeding to buy ${quantity} of ${product.name} (${selectedSize})`);
-    // Implement checkout functionality here
+    if (!product) return;
+    navigate('/checkout', {
+      state: {
+        cartItems: [
+          {
+            ...product,
+            quantity,
+          },
+        ],
+      },
+    });
   };
-
   // Function to handle recommendation click
-  const handleRecommendationClick = (id) => {
-    navigate(`/product/${id}`); // Navigate to product details page
+  const handleRecommendationClick = (productId) => {
+    console.log(`Navigating to product details for ID: ${productId}`);
+    if (productId) {
+      navigate(`/detailsM/${productId}`); // Navigate to the product details page
+    } else {
+      console.error("Product ID is missing");
+    }
   };
+  
+
 
   return (
     <div className="men-details">
@@ -187,7 +201,7 @@ const MenDetails = ({ cartItems, setCart }) => {
             <div
               key={product.id}
               className="rec-product-card"
-              onClick={() => handleRecommendationClick(product.id)}
+              onClick={() => handleRecommendationClick(product._id)}
               style={{ cursor: 'pointer' }}
             >
               <img

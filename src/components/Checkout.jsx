@@ -1,17 +1,15 @@
 import React, { useState } from 'react';
 import { useLocation } from 'react-router-dom';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { faGooglePay } from '@fortawesome/free-brands-svg-icons'; // For brand icons like Google Pay and Paytm
-import {faCreditCard} from '@fortawesome/free-solid-svg-icons';
-import { faMobileAlt } from '@fortawesome/free-solid-svg-icons';
-import { faPaypal } from '@fortawesome/free-brands-svg-icons';
-import { faTruck } from '@fortawesome/free-solid-svg-icons';
+import { faGooglePay, faPaypal } from '@fortawesome/free-brands-svg-icons'; 
+import { faCreditCard, faMobileAlt, faTruck } from '@fortawesome/free-solid-svg-icons';
 import './Checkout.css';
 
 const Checkout = () => {
   const location = useLocation();
   const cartItems = location.state?.cartItems || [];
   const [paymentMethod, setPaymentMethod] = useState('');
+  const [isProcessing, setIsProcessing] = useState(false);
 
   const calculateTotal = () => {
     return cartItems.reduce(
@@ -24,110 +22,76 @@ const Checkout = () => {
     setPaymentMethod(method);
   };
 
-  const handleConfirmPayment = () => {
-    alert('Payment confirmed!');
+  const handleConfirmPayment = (e) => {
+    e.preventDefault();
+
+    if (!paymentMethod) {
+      alert('Please select a payment method before confirming.');
+      return;
+    }
+
+    setIsProcessing(true);
+
+    setTimeout(() => {
+      setIsProcessing(false);
+      alert(`Payment confirmed using ${paymentMethod}!`);
+    }, 2000);
   };
 
   return (
     <div className="container">
-      {/* Left Side: Payment Form */}
       <div className="left-side">
-        <h2><FontAwesomeIcon icon={faCreditCard} className="me-2" /> Payment Page</h2>
+        <h2>
+          <FontAwesomeIcon icon={faCreditCard} className="me-2" /> Payment Page
+        </h2>
 
-        {/* Personal Details Form */}
         <div className="checkout-summary">
           <h4>Enter Your Details</h4>
           <form id="payment-form">
             <div className="form-group">
               <label htmlFor="name">Name</label>
-              <input type="text" id="name" className="form-control" required />
+              <input type="text" id="name" className="form-control" placeholder="John Doe" required />
             </div>
             <div className="form-group">
               <label htmlFor="email">Email</label>
-              <input type="email" id="email" className="form-control" required />
+              <input type="email" id="email" className="form-control" placeholder="example@mail.com" required />
             </div>
             <div className="form-group">
               <label htmlFor="phone">Phone Number</label>
-              <input type="tel" id="phone" className="form-control" required />
+              <input type="tel" id="phone" className="form-control" placeholder="1234567890" required />
             </div>
             <div className="form-group">
               <label htmlFor="address">Address</label>
-              <input type="text" id="address" className="form-control" required />
+              <input type="text" id="address" className="form-control" placeholder="123 Street, City, Country" required />
             </div>
           </form>
         </div>
 
-        {/* Payment Methods */}
         <div className="payment-methods mt-4">
           <h4>Select Payment Method</h4>
-
-          <div className="payment-method">
-            <input 
-              type="radio" 
-              id="googlePay" 
-              name="paymentMethod" 
-              value="Google Pay" 
-              onChange={() => handlePaymentMethodChange('Google Pay')}
-            />
-            <label htmlFor="googlePay">
-              <FontAwesomeIcon icon={faGooglePay} className="payment-icon" /> Google Pay
-            </label>
-          </div>
-
-          <div className="payment-method">
-            <input 
-              type="radio" 
-              id="phonePe" 
-              name="paymentMethod" 
-              value="PhonePe" 
-              onChange={() => handlePaymentMethodChange('PhonePe')}
-            />
-            <label htmlFor="phonePe">
-              <FontAwesomeIcon icon={faMobileAlt} className="payment-icon" /> PhonePe
-            </label>
-          </div>
-
-          <div className="payment-method">
-            <input 
-              type="radio" 
-              id="paytm" 
-              name="paymentMethod" 
-              value="Paytm" 
-              onChange={() => handlePaymentMethodChange('Paytm')}
-            />
-            <label htmlFor="paytm">
-              <FontAwesomeIcon icon={faPaypal} className="payment-icon" /> Paytm
-            </label>
-          </div>
-
-          <div className="payment-method">
-            <input 
-              type="radio" 
-              id="cashOnDelivery" 
-              name="paymentMethod" 
-              value="Cash on Delivery" 
-              onChange={() => handlePaymentMethodChange('Cash on Delivery')}
-            />
-            <label htmlFor="cashOnDelivery">
-              <FontAwesomeIcon icon={faTruck} className="payment-icon" /> Cash on Delivery
-            </label>
-          </div>
-
-          <div className="payment-method">
-            <input 
-              type="radio" 
-              id="creditCard" 
-              name="paymentMethod" 
-              value="Credit/Debit Card" 
-              onChange={() => handlePaymentMethodChange('Credit/Debit Card')}
-            />
-            <label htmlFor="creditCard">
-              <FontAwesomeIcon icon={faCreditCard} className="payment-icon" /> Credit/Debit Card
-            </label>
-          </div>
+          {[
+            { id: 'googlePay', label: 'Google Pay', icon: faGooglePay },
+            { id: 'phonePe', label: 'PhonePe', icon: faMobileAlt },
+            { id: 'paytm', label: 'Paytm', icon: faPaypal },
+            { id: 'cashOnDelivery', label: 'Cash on Delivery', icon: faTruck },
+            { id: 'creditCard', label: 'Credit/Debit Card', icon: faCreditCard },
+          ].map(({ id, label, icon }) => (
+            <div className="payment-method" key={id}>
+              <input
+                type="radio"
+                id={id}
+                name="paymentMethod"
+                value={label}
+                onChange={() => handlePaymentMethodChange(label)}
+                aria-label={`Payment method ${label}`}
+              />
+              <label htmlFor={id}>
+                <FontAwesomeIcon icon={icon} className="payment-icon" /> {label}
+              </label>
+            </div>
+          ))}
         </div>
 
-        {/* Credit/Debit Card Form */}
         {paymentMethod === 'Credit/Debit Card' && (
           <div className="card-details-form">
             <h5>Enter Card Details</h5>
@@ -149,7 +113,6 @@ const Checkout = () => {
         )}
       </div>
 
-      {/* Right Side: Cart Summary */}
       <div className="right-side">
         <div className="checkout-summary">
           <h4>Order Summary</h4>
@@ -157,7 +120,8 @@ const Checkout = () => {
             {cartItems.map((item) => (
               <div className="cart-item" key={item._id}>
                 <div className="item-details">
-                  <span>{item.name}</span><br/>
+                  <span>{item.name}</span>
+                  <br />
                   <span> Quantity: {item.quantity}</span>
                 </div>
                 <div className="item-price">
@@ -166,7 +130,6 @@ const Checkout = () => {
               </div>
             ))}
           </div>
-
           <div className="total-section">
             <span>Total:</span>
             <span id="total-amount" className="total-amount">
@@ -175,10 +138,13 @@ const Checkout = () => {
           </div>
         </div>
 
-        {/* Confirm Payment Button */}
         <div className="text-center btn-container">
-          <button onClick={handleConfirmPayment} className="btn btn-primary btn-lg w-100">
-            Confirm Payment
+          <button
+            onClick={handleConfirmPayment}
+            className="btn btn-primary btn-lg w-100"
+            disabled={isProcessing}
+          >
+            {isProcessing ? 'Processing...' : 'Confirm Payment'}
           </button>
         </div>
       </div>

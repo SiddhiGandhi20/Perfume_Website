@@ -69,14 +69,27 @@ const ExclusiveDetails = ({ cartItems = [], setCart }) => {
   };
 
   const handleBuyNow = () => {
-    console.log(`Proceeding to buy ${quantity} of ${product?.name}`);
-    // Add navigation to checkout here
+    if (!product) return;
+    navigate('/checkout', {
+      state: {
+        cartItems: [
+          {
+            ...product,
+            quantity,
+          },
+        ],
+      },
+    });
   };
 
-  const handleViewDetails = (productId) => {
-    navigate(`/exclusive/${productId}`);
+  const handleRecommendationClick = (productId) => {
+    console.log(`Navigating to product details for ID: ${productId}`);
+    if (productId) {
+      navigate(`/details/${productId}`); // Navigate to the product details page
+    } else {
+      console.error("Product ID is missing");
+    }
   };
-
   if (loading) {
     return <div className="loading-spinner"></div>; // Show a spinner while loading
   }
@@ -167,10 +180,10 @@ const ExclusiveDetails = ({ cartItems = [], setCart }) => {
         <div className="rec-products-container">
           {recommendations.map((product) => (
             <div
-              key={product.id}
-              className="rec-product-card"
-              onClick={() => handleViewDetails(product.id)}
-              style={{ cursor: 'pointer' }}
+            key={product.id}
+            className="rec-product-card"
+            onClick={() => handleRecommendationClick(product._id)}
+            style={{ cursor: 'pointer' }}
             >
               <img
                 src={product.image_url}

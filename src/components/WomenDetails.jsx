@@ -68,20 +68,24 @@ const WomenDetails = ({ cartItems, setCart }) => {
   };
 
   // Handle adding the product to the cart
-  const handleAddToCart = (event, product) => {
-    event.stopPropagation(); // Prevent event propagation
-
-    // Check if the product already exists in the cart
-    const existingProduct = cartItems.find(item => item.id === product.id);
+  const handleAddToCart = (event) => {
+    event.stopPropagation(); // Prevent propagation to parent `onClick`
+    
+    // Ensure cartItems is always an array
+    if (!product || !Array.isArray(cartItems)) return; // Ensure cartItems is an array
+    
+    const existingProduct = cartItems.find((item) => item.id === product.id);
 
     if (existingProduct) {
-      setCart(cartItems.map(item =>
-        item.id === product.id
-          ? { ...item, quantity: item.quantity + 1 }
-          : item
-      ));
+      setCart(
+        cartItems.map((item) =>
+          item.id === product.id
+            ? { ...item, quantity: item.quantity + parseInt(quantity) }
+            : item
+        )
+      );
     } else {
-      setCart([...cartItems, { ...product, quantity: 1 }]);
+      setCart([...cartItems, { ...product, quantity: parseInt(quantity) }]);
     }
 
     alert(`${product.name} has been added to your cart!`);
@@ -102,8 +106,17 @@ const WomenDetails = ({ cartItems, setCart }) => {
 
   // Handle buy now action
   const handleBuyNow = () => {
-    console.log(`Proceeding to buy ${quantity} of ${product.name}`);
-    // Add functionality to proceed to checkout
+    if (!product) return;
+    navigate('/checkout', {
+      state: {
+        cartItems: [
+          {
+            ...product,
+            quantity,
+          },
+        ],
+      },
+    });
   };
 
   // Handle recommendation click to show the clicked product details
@@ -115,6 +128,7 @@ const WomenDetails = ({ cartItems, setCart }) => {
       console.error("Product ID is missing");
     }
   };
+  
 
   // Loading and error handling
   if (loading) return <p>Loading...</p>;
@@ -197,7 +211,7 @@ const WomenDetails = ({ cartItems, setCart }) => {
             <div
               key={product.id}
               className="rec-product-card"
-              onClick={() => handleRecommendationClick(product.id)}
+              onClick={() => handleRecommendationClick(product._id)}
               style={{ cursor: 'pointer' }}
             >
               <img
